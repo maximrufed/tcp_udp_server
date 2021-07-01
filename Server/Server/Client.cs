@@ -40,6 +40,8 @@ namespace Server
 
                 stream = socket.GetStream();
 
+                receiveBuffer = new byte[dataBufferSize];
+
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
 
                 // TODO Send welcome package
