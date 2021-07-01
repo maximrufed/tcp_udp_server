@@ -1,0 +1,13 @@
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\bin\Debug\netcoreapp3.1\Server.exe
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\bin\Debug\netcoreapp3.1\Server.dll
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\bin\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
