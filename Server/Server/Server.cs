@@ -6,61 +6,118 @@ using System.Net.Sockets;
 
 namespace Server
 {
-    class Server
-    {
-        public static int MaxPlayers;
-        public static int Port;
-        public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
-        public delegate void PacketHandler(int _fromClient, Packet _packet);
-        public static Dictionary<int, PacketHandler> packetHandlers;
+	class Server
+	{
+		public static int MaxPlayers;
+		public static int Port;
+		public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
+		public delegate void PacketHandler(int _fromClient, Packet _packet);
+		public static Dictionary<int, PacketHandler> packetHandlers;
 
-        private static TcpListener tcpListener;
+		private static TcpListener tcpListener;
+		private static UdpClient udpListener;
 
-        public static void Start(int _maxPlayers, int _port)
+		public static void Start(int _maxPlayers, int _port)
+		{
+			MaxPlayers = _maxPlayers;
+			Port = _port;
+
+			InitializeData();
+			Console.WriteLine("Starting Server...");
+
+			tcpListener = new TcpListener(IPAddress.Any, Port);
+			tcpListener.Start();
+			tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
+
+			udpListener = new UdpClient(Port);
+			udpListener.BeginReceive(UDPReceiveCallback, null);
+
+			Console.WriteLine($"Server started on port {Port}");
+		}
+
+		private static void UDPReceiveCallback(IAsyncResult _result)
+		{
+			try
+			{
+				IPEndPoint _clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+				byte[] _data = udpListener.EndReceive(_result, ref _clientEndPoint);
+				udpListener.BeginReceive(UDPReceiveCallback, null);
+
+				if (_data.Length < 4)
+				{
+					return;
+				}
+
+				using (Packet _packet = new Packet(_data))
+				{
+					int _clientId = _packet.ReadInt();
+
+					if (_clientId == 0)
+					{
+						return;
+					}
+
+					if (clients[_clientId].udp.endPoint == null)
+					{
+						clients[_clientId].udp.Connect(_clientEndPoint);
+						return;
+					}
+
+					if (clients[_clientId].udp.endPoint.ToString() == _clientEndPoint.ToString())
+                    {
+						clients[_clientId].udp.HandleData(_packet);
+                    }
+				}
+			}
+			catch (Exception _ex)
+			{
+				Console.WriteLine($"Error receiving UDP data: {_ex}");
+			}
+		}
+
+		public static void SendUDPData(IPEndPoint _endPoint, Packet _packet)
         {
-            MaxPlayers = _maxPlayers;
-            Port = _port;
-
-            InitializeData();
-            Console.WriteLine("Starting Server...");
-
-            tcpListener = new TcpListener(IPAddress.Any, Port);
-            tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
-
-            Console.WriteLine($"Server started on port {Port}");
-        }
-
-        public static void TCPConnectCallback(IAsyncResult _result)
-        {
-            TcpClient client = tcpListener.EndAcceptTcpClient(_result);
-            tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
-            Console.WriteLine($"Incoming connection from {client.Client.RemoteEndPoint}");
-
-            for (int i = 1; i <= MaxPlayers; i++)
+			try
+			{
+				udpListener.BeginSend(_packet.ToArray(), _packet.Length(), _endPoint, null, null);
+			}
+			catch (Exception _ex)
             {
-                if (clients[i].tcp.socket == null)
-                {
-                    clients[i].tcp.Connect(client);
-                    return;
-                }
+				Console.WriteLine($"Error sending UDP data to {_endPoint}: {_ex}");
             }
-
-            Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect: server full");
         }
 
-        public static void InitializeData()
-        {
-            for (int i = 1; i <= MaxPlayers; i++)
-            {
-                clients.Add(i, new Client(i));
-            }
+		public static void TCPConnectCallback(IAsyncResult _result)
+		{
+			TcpClient client = tcpListener.EndAcceptTcpClient(_result);
+			tcpListener.BeginAcceptTcpClient(TCPConnectCallback, null);
+			Console.WriteLine($"Incoming connection from {client.Client.RemoteEndPoint}");
 
-            packetHandlers = new Dictionary<int, PacketHandler>()
-            {
-                { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived }
-            };
-            Console.WriteLine("Initialized packets.");
-        }
-    }
+			for (int i = 1; i <= MaxPlayers; i++)
+			{
+				if (clients[i].tcp.socket == null)
+				{
+					clients[i].tcp.Connect(client);
+					return;
+				}
+			}
+
+			Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect: server full");
+		}
+
+		public static void InitializeData()
+		{
+			for (int i = 1; i <= MaxPlayers; i++)
+			{
+				clients.Add(i, new Client(i));
+			}
+
+			packetHandlers = new Dictionary<int, PacketHandler>()
+			{
+				{ (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
+				{ (int)ClientPackets.udpTestReceived, ServerHandle.UDPTestReceived }
+			};
+			Console.WriteLine("Initialized packets.");
+		}
+	}
 }
