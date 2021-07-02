@@ -2,7 +2,8 @@
 /GameClient/Logs
 /GameClient/Packages
 /GameClient/ProjectSettings
-/GameClient/Temp/
-/GameClient/UserSettings/
+/GameClient/Temp
+/GameClient/UserSettings
+/GameClient/Build
 
 

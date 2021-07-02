@@ -55,7 +55,6 @@ namespace Server
 
             public void SendData(Packet _packet)
             {
-                Console.WriteLine($"client {id} -> send packet");
                 try
                 {
                     if (socket != null)
@@ -75,7 +74,8 @@ namespace Server
                     int _byteLength = stream.EndRead(_result);
                     if (_byteLength <= 0)
                     {
-                        // TODO Disconnect
+                        // Disconnect
+                        Server.clients[id].Disconnect();
                         return;
                     }
 
@@ -89,7 +89,8 @@ namespace Server
                 catch (Exception _ex)
                 {
                     Console.WriteLine($"Error receiving TCP Data: {_ex}");
-                    // TODO Disconnect
+                    // Disconnect
+                    Server.clients[id].Disconnect();
                 }
             }
 
@@ -139,6 +140,15 @@ namespace Server
 
                 return false;
             }
+
+            public void Disconnect()
+            {
+                socket.Close();
+                stream = null;
+                receivedData = null;
+                receiveBuffer = null;
+                socket = null;
+            }
         }
 
         public class UDP
@@ -177,11 +187,15 @@ namespace Server
                 });
             }
 
+            public void Disconnect()
+            {
+                endPoint = null;
+            }
+
         }
 
         public void SendIntoGame(string _playerName)
         {
-            Console.WriteLine($"Send spawn player: {_playerName}");
             player = new Player(id, _playerName, new Vector3(0, 0, 0));
 
             // spawn all other to me
@@ -192,7 +206,6 @@ namespace Server
                     if (_client.id != id)
                     {
                         ServerSend.SpawnPlayer(id, _client.player);
-                        Console.WriteLine($"Spawn {id}, {_client.player.username}");
                     }
                 }
             }
@@ -203,9 +216,17 @@ namespace Server
                 if (_client.player != null)
                 {
                     ServerSend.SpawnPlayer(_client.id, player);
-                    Console.WriteLine($"Spawn {_client.id}, {player.username}");
                 }
             }
+        }
+
+        private void Disconnect()
+        {
+            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
+
+            player = null;
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }
