@@ -10,3 +10,4 @@ C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server
 C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.dll
 C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.pdb
 C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\Users\Максимка\Documents\Unity\my_server\tcp_udp_server\Server\Server\obj\Debug\netcoreapp3.1\Server.csproj.CoreCompileInputs.cache
