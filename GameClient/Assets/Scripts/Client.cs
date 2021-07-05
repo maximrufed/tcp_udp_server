@@ -4,11 +4,13 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
+using UnityEngine.UI;
 
 public class Client : MonoBehaviour
 {
     public static Client instance;
     public static int dataBufferSize = 4096;
+    public Dropdown drop;
     
     public string ip = "127.0.0.1";
     public int port = 26950;
@@ -43,6 +45,14 @@ public class Client : MonoBehaviour
 
     public void ConnectToServer()
     {
+        if (drop.value == 0)
+        {
+            ip = "127.0.0.1";
+        }
+        else if (drop.value == 1) {
+            ip = "40.118.46.62";
+        }
+
         InitializeClientData();
 
         isConnected = true;
@@ -194,13 +204,10 @@ public class Client : MonoBehaviour
         public UdpClient socket;
         public IPEndPoint endPoint;
 
-        public UDP()
-        {
-            endPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
-        }
-
         public void Connect(int _localPort)
         {
+            endPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
+
             socket = new UdpClient(_localPort);
 
             socket.Connect(endPoint);
