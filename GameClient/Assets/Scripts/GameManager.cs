@@ -42,4 +42,11 @@ public class GameManager : MonoBehaviour
 
 		players.Add(_id, _player.GetComponent<PlayerManager>());
 	}
+
+	public static void PlayerDisconnect(int _id)
+    {
+		Destroy(players[_id].transform.gameObject);
+
+		players.Remove(_id);
+    }
 }

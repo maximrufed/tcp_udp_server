@@ -107,6 +107,16 @@ namespace Server
 			}
 		}
 
+		public static void PlayerDisconnect(int _id)
+        {
+			using (Packet _packet = new Packet((int)ServerPackets.playerDisconnect))
+            {
+				_packet.Write(_id);
+
+				SendTCPDataToAll(_packet);
+            }
+        }
+
 		#endregion
 	}
 }

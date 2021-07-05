@@ -12,6 +12,7 @@ namespace Server
 		spawnPlayer,
 		playerPosition,
 		playerRotation,
+		playerDisconnect,
 	}
 
 	/// <summary>Sent from client to server.</summary>

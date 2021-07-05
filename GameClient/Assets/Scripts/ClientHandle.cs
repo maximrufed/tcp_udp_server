@@ -43,4 +43,11 @@ public class ClientHandle : MonoBehaviour
 
         GameManager.players[_id].transform.rotation = _rotation;
     }
+
+    public static void PlayerDisconnect(Packet _packet)
+    {
+        int _id = _packet.ReadInt();
+        
+        GameManager.PlayerDisconnect(_id);
+    }
 }

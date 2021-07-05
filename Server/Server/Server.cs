@@ -122,5 +122,12 @@ namespace Server
             };
             Console.WriteLine("Initialized packets.");
         }
+
+        public static void PlayerDisconnect(int _id)
+        {
+            ServerSend.PlayerDisconnect(_id);
+
+            clients[_id] = new Client(_id);
+        }
     }
 }

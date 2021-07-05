@@ -227,6 +227,9 @@ namespace Server
             player = null;
             tcp.Disconnect();
             udp.Disconnect();
+
+
+            Server.PlayerDisconnect(id);
         }
     }
 }
