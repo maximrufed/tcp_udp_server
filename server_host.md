@@ -6,8 +6,7 @@
 
 1) ** Запуск dotnet core под linux **
 
-Я использовал dotnet core.
-Создал проект в Visual Studio
+Я использовал в моём проекте (возможно библиотеку) dotnet core.
 И узнал, что его можно запустить под linux (в моём случае ubuntu).
 Для этого нужно установить dotnet. [Инструкция по установке](https://docs.microsoft.com/ru-ru/dotnet/core/install/linux-ubuntu)
 Важно, что dotnet core - версия 3.1 (не 5.0)
