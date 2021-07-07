@@ -4,7 +4,6 @@
 /UnityGameServer/ProjectSettings
 /UnityGameServer/Temp
 /UnityGameServer/UserSettings
-/UnityGameServer/Build
 
 /GameClient/Library
 /GameClient/Logs
@@ -12,5 +11,4 @@
 /GameClient/ProjectSettings
 /GameClient/Temp
 /GameClient/UserSettings
-/GameClient/Build
 
